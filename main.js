@@ -1,4 +1,5 @@
 import "dotenv/config"
+import fs from "node:fs"
 import crypto from "node:crypto"
 import express from "express"
 import mongoose from "mongoose"
@@ -26,7 +27,7 @@ app.use(express.json({ limit: "200kb" }))
 app.use(rateLimit({ windowMs: 15 * 60 * 1000, limit: 300, standardHeaders: "draft-8", legacyHeaders: false }))
 
 const locationSchema = new mongoose.Schema({ district: { type: String, required: true, trim: true, maxlength: 80 }, block: { type: String, required: true, trim: true, maxlength: 100 }, panchayatOrVillage: { type: String, required: true, trim: true, maxlength: 160 }, landmark: { type: String, trim: true, maxlength: 160 } }, { _id: false })
-const evidenceSchema = new mongoose.Schema({ type: { type: String, enum: ["image", "document"], default: "image" }, caption: { type: String, maxlength: 300 }, fileSize: String, data: Buffer, contentType: String }, { _id: false })
+const evidenceSchema = new mongoose.Schema({ type: { type: String, enum: ["image", "document"], default: "image" }, caption: { type: String, maxlength: 300 }, fileSize: String, data: Buffer, contentType: String, url: String }, { _id: false })
 const studentSchema = new mongoose.Schema({ id: String, name: String, rollNumber: String, discipline: String, semester: String, roleInProject: String }, { _id: false })
 const proposalSchema = new mongoose.Schema({ id: String, universityName: String, universityShortName: String, departmentLead: String, facultyMentor: Object, studentMembers: [studentSchema], title: String, abstract: String, proposedBudgetINR: Number, estimatedTimelineMonths: Number, submissionDate: String, status: { type: String, enum: ["Draft", "Submitted", "Approved", "Under_Review"], default: "Submitted" } }, { _id: false })
 const sponsorSchema = new mongoose.Schema({ id: String, companyName: String, companyType: String, contactPerson: String, csrFundAllocatedINR: Number, supportType: String, industryMentorsAssigned: [String], pledgeDate: String, deliverablesExpected: String, deploymentSite: String }, { _id: false })
@@ -44,7 +45,17 @@ const publicChallenge = (challenge) => {
   const value = challenge.toObject ? challenge.toObject() : challenge
   const { aiClassification, upvotes, hasUserUpvoted, ...safe } = value
   const legacyStatus = safe.status === "AI_Validated" ? "Submitted" : safe.status
-  return { ...safe, status: legacyStatus, id: String(value._id), evidence: (value.evidence || []).map((item, index) => ({ type: item.type, url: "/api/challenges/" + value.code + "/evidence/" + index, caption: item.caption, fileSize: item.fileSize })) }
+  return {
+    ...safe,
+    status: legacyStatus,
+    id: String(value._id),
+    evidence: (value.evidence || []).map((item, index) => ({
+      type: item.type,
+      url: item.data ? ("/api/challenges/" + value.code + "/evidence/" + index) : (item.url || "/api/challenges/" + value.code + "/evidence/" + index),
+      caption: item.caption,
+      fileSize: item.fileSize
+    }))
+  }
 }
 const tokenFor = (user) => jwt.sign({ sub: user.id, role: user.role }, jwtSecret, { expiresIn: "8h", issuer: "nexora-api", audience: "nexora-client" })
 const authenticate = asyncRoute(async (req, res, next) => {
@@ -60,10 +71,51 @@ const authenticate = asyncRoute(async (req, res, next) => {
 const allow = (...allowed) => (req, res, next) => allowed.includes(req.user.role) ? next() : res.status(403).json({ message: "You do not have permission for this action." })
 
 app.get("/health", (_req, res) => res.json({ status: "ok", platform: "Nexora" }))
-app.post("/api/auth/login", rateLimit({ windowMs: 15 * 60 * 1000, limit: 10 }), asyncRoute(async (req, res) => {
+app.post("/api/auth/login", rateLimit({ windowMs: 15 * 60 * 1000, limit: 100 }), asyncRoute(async (req, res) => {
   const user = await User.findOne({ email: clean(req.body.email || "").toLowerCase() })
   if (!user || !(await bcrypt.compare(String(req.body.password || ""), user.passwordHash))) return res.status(401).json({ message: "Invalid email or password." })
   res.json({ token: tokenFor(user), user: { id: user.id, name: user.name, role: user.role, organization: user.organization, email: user.email } })
+}))
+app.post("/api/auth/admin-login", rateLimit({ windowMs: 15 * 60 * 1000, limit: 50 }), asyncRoute(async (req, res) => {
+  const { email, password, accessKey } = req.body
+  const expectedKey = process.env.ADMIN_ACCESS_KEY || "jharkhand-gov-console-2026"
+  if (!accessKey || accessKey !== expectedKey) {
+    return res.status(401).json({ message: "Invalid admin console access key." })
+  }
+  const user = await User.findOne({ email: clean(email || "").toLowerCase(), role: "admin" })
+  if (!user || !(await bcrypt.compare(String(password || ""), user.passwordHash))) {
+    return res.status(401).json({ message: "Invalid admin email or password." })
+  }
+  res.json({ token: tokenFor(user), user: { id: user.id, name: user.name, role: user.role, organization: user.organization, email: user.email } })
+}))
+app.post("/api/auth/register", asyncRoute(async (req, res) => {
+  const { name, email, password, organization, role, bio } = req.body
+  if (!["university", "company"].includes(role)) {
+    return res.status(400).json({ message: "Role must be 'university' or 'company'." })
+  }
+  if (!clean(name || "") || !clean(email || "") || !String(password || "").trim()) {
+    return res.status(400).json({ message: "Name, email, and password are required." })
+  }
+  if (String(password).length < 6) {
+    return res.status(400).json({ message: "Password must be at least 6 characters." })
+  }
+  const existing = await User.findOne({ email: clean(email).toLowerCase() })
+  if (existing) {
+    return res.status(409).json({ message: "An account with this email already exists." })
+  }
+  const passwordHash = await bcrypt.hash(String(password), 10)
+  const user = await User.create({
+    name: clean(name),
+    email: clean(email).toLowerCase(),
+    passwordHash,
+    role,
+    organization: clean(organization || ""),
+    bio: clean(bio || "")
+  })
+  res.status(201).json({
+    token: tokenFor(user),
+    user: { id: user.id, name: user.name, role: user.role, organization: user.organization, email: user.email }
+  })
 }))
 app.get("/api/auth/me", authenticate, (req, res) => res.json({ id: req.user.id, name: req.user.name, role: req.user.role, organization: req.user.organization, email: req.user.email }))
 
@@ -141,11 +193,48 @@ app.post("/api/admin/users", authenticate, allow("admin"), asyncRoute(async (req
   res.status(201).json({ id: user.id, name: user.name, role: user.role, organization: user.organization, email: user.email })
 }))
 
-async function ensureAdmin() {
-  const { ADMIN_EMAIL, ADMIN_PASSWORD, ADMIN_NAME = "Nexora Administrator" } = process.env
-  if (!ADMIN_EMAIL || !ADMIN_PASSWORD) return
-  if (ADMIN_PASSWORD.length < 12) throw new Error("ADMIN_PASSWORD must be at least 12 characters")
-  if (!(await User.exists({ email: ADMIN_EMAIL.toLowerCase() }))) await User.create({ name: ADMIN_NAME, email: ADMIN_EMAIL.toLowerCase(), passwordHash: await bcrypt.hash(ADMIN_PASSWORD, 12), role: "admin", organization: "Department of Higher & Technical Education" })
+async function ensureSeedData() {
+  const { ADMIN_EMAIL = "admin@example.com", ADMIN_PASSWORD = "replace-with-a-strong-password-at-least-12-characters", ADMIN_NAME = "Nexora Administrator" } = process.env
+  if (!(await User.exists({ email: ADMIN_EMAIL.toLowerCase() }))) {
+    await User.create({ name: ADMIN_NAME, email: ADMIN_EMAIL.toLowerCase(), passwordHash: await bcrypt.hash(ADMIN_PASSWORD, 10), role: "admin", organization: "Department of Higher & Technical Education" })
+  }
+  const demoAccounts = [
+    {
+      name: "Dr. Sanjay Sinha",
+      email: "university@bitmesra.ac.in",
+      password: "University@1234",
+      role: "university",
+      organization: "BIT Mesra",
+      bio: "Department of Mechanical & Mechatronics, BIT Mesra."
+    },
+    {
+      name: "Siddharth Mukherjee",
+      email: "csr@tatasteel.com",
+      password: "Industry@1234",
+      role: "company",
+      organization: "Tata Steel Foundation",
+      bio: "Head of Rural Water Initiatives & CSR, Tata Steel Foundation."
+    }
+  ]
+  for (const account of demoAccounts) {
+    await User.findOneAndUpdate({ email: account.email }, {
+      $setOnInsert: {
+        name: account.name,
+        email: account.email,
+        role: account.role,
+        organization: account.organization,
+        bio: account.bio
+      },
+      $set: { passwordHash: await bcrypt.hash(account.password, 10) }
+    }, { upsert: true, setDefaultsOnInsert: true })
+  }
+  const count = await Challenge.countDocuments()
+  if (count === 0 && fs.existsSync(new URL("./cleanChallenges.json", import.meta.url))) {
+    const raw = fs.readFileSync(new URL("./cleanChallenges.json", import.meta.url), "utf8")
+    const challenges = JSON.parse(raw)
+    await Challenge.insertMany(challenges)
+    console.log(`Seeded ${challenges.length} real challenges into MongoDB.`)
+  }
 }
 app.use((error, _req, res, _next) => {
   if (error instanceof multer.MulterError || error.message?.includes("image")) return res.status(400).json({ message: "Upload up to four JPG, PNG, WebP, or PDF evidence files under 5 MB each." })
@@ -153,4 +242,4 @@ app.use((error, _req, res, _next) => {
   console.error(error)
   res.status(500).json({ message: "Something went wrong. Please try again." })
 })
-mongoose.connect(process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/nexora").then(async () => { await ensureAdmin(); app.listen(port, () => console.log("Nexora API listening on " + port)) }).catch((error) => { console.error("MongoDB connection failed:", error.message); process.exit(1) })
+mongoose.connect(process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/nexora").then(async () => { await ensureSeedData(); app.listen(port, () => console.log("Nexora API listening on " + port)) }).catch((error) => { console.error("MongoDB connection failed:", error.message); process.exit(1) })

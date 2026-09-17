@@ -1,0 +1,597 @@
+[
+  {
+    "code": "JHK-2026-WTR-018",
+    "title": "Fluoride & Iron Contamination in Deep Borewells across 12 Hamlets",
+    "description": "High incidence of dental fluorosis and gastrointestinal distress reported among 4,200 villagers due to excessive dissolved iron and fluoride levels (over 3.2 mg/L) in community handpumps. Conventional sand filters are clogging rapidly and local water committees lack simple testing and rejuvenation tools.",
+    "thematicDomain": "Water Resources",
+    "location": {
+      "district": "Gumla",
+      "block": "Bishunpur",
+      "panchayatOrVillage": "Banari Panchayat (12 Tolas)",
+      "landmark": "Near Netarhat foothills valley",
+      "coordinates": {
+        "lat": 23.3644,
+        "lng": 84.2486
+      }
+    },
+    "submittedBy": {
+      "name": "Somra Oraon",
+      "type": "Panchayat",
+      "contactPhone": "+91 94311-82014",
+      "date": "2026-03-02"
+    },
+    "evidence": [
+      {
+        "type": "image",
+        "url": "https://images.unsplash.com/photo-1541888946425-d0fbb186f5f7?auto=format&fit=crop&w=800&q=80",
+        "caption": "Handpump showing red iron sludge precipitate at Banari village center"
+      },
+      {
+        "type": "document",
+        "url": "#",
+        "caption": "PHED District Water Testing Laboratory Report (Feb 2026)",
+        "fileSize": "1.8 MB"
+      }
+    ],
+    "status": "In_Prototyping",
+    "priority": "Critical",
+    "affectedPopulationEstimate": 4200,
+    "assignedUniversity": "BIT Mesra",
+    "universityProposal": {
+      "id": "prop-bit-01",
+      "universityName": "Birla Institute of Technology, Mesra",
+      "universityShortName": "BIT Mesra",
+      "departmentLead": "Department of Chemical & Environmental Engineering",
+      "facultyMentor": {
+        "id": "fac-01",
+        "name": "Dr. Anandita Sen",
+        "department": "Environmental Science & Engineering",
+        "designation": "Professor & Head of Water Research Center",
+        "email": "asen@bitmesra.ac.in"
+      },
+      "studentMembers": [
+        {
+          "id": "stu-101",
+          "name": "Priyanshu Tirkey",
+          "rollNumber": "BTECH/ENV/22/045",
+          "discipline": "B.Tech Environmental Engineering",
+          "semester": "6th Semester",
+          "roleInProject": "Field Testing & Adsorption Column Design"
+        },
+        {
+          "id": "stu-102",
+          "name": "Aniket Verma",
+          "rollNumber": "BTECH/CHE/22/012",
+          "discipline": "B.Tech Chemical Engineering",
+          "semester": "6th Semester",
+          "roleInProject": "Activated Biochar Media Preparation"
+        },
+        {
+          "id": "stu-103",
+          "name": "Ritu Minz",
+          "rollNumber": "MTECH/RS/24/008",
+          "discipline": "M.Tech Remote Sensing & GIS",
+          "semester": "2nd Semester",
+          "roleInProject": "Aquifer GIS Mapping & Water Table Correlation"
+        }
+      ],
+      "title": "Low-Cost Bio-Adsorbent Activated Red Mud & Clay Cartridge Filter for Rural Handpumps",
+      "abstract": "Developing a gravity-fed, electricity-free modular filtration cylinder using local Jharkhand red clay enriched with activated carbon from agricultural waste. Reduces fluoride below 1.0 mg/L with zero chemical runoff and regenerable cartridges.",
+      "proposedBudgetINR": 380000,
+      "estimatedTimelineMonths": 6,
+      "nepExperientialCredits": 4,
+      "labResourcesRequired": [
+        "Spectrophotometer Lab",
+        "Water Adsorption Testing Rig",
+        "AAS Analyzer"
+      ],
+      "intellectualPropertyTarget": "Indian Patent Application for Regenerable Bio-Ceramic Filter Media",
+      "submissionDate": "2026-03-08",
+      "status": "Approved"
+    },
+    "industrySponsor": {
+      "id": "ind-01",
+      "companyName": "Tata Steel Foundation",
+      "companyType": "CSR Foundation",
+      "contactPerson": "Siddharth Mukherjee (Head of Rural Water Initiatives)",
+      "csrFundAllocatedINR": 500000,
+      "supportType": "Funding",
+      "industryMentorsAssigned": [
+        "Er. Rajesh Nambiar (Senior Metallurgical Consultant)"
+      ],
+      "pledgeDate": "2026-03-12",
+      "deliverablesExpected": "Installation and water testing validation at 5 community borewells in Bishunpur.",
+      "deploymentSite": "Bishunpur Block, Gumla"
+    },
+    "milestones": [
+      {
+        "id": "m-1",
+        "title": "Water Sampling & Baseline Chemical Profiling",
+        "description": "Collect 50 groundwater samples across 12 hamlets in Banari for fluoride/iron baseline.",
+        "dueDate": "2026-03-20",
+        "status": "Completed",
+        "completedDate": "2026-03-18",
+        "deliverableLink": "#",
+        "evidenceNotes": "Baseline confirmed Fluoride 3.4 mg/L, Total Iron 4.1 mg/L in 9 out of 12 borewells."
+      },
+      {
+        "id": "m-2",
+        "title": "Lab Prototype Fabrication & Column Breakthrough Tests",
+        "description": "Fabricate 3 modular cylinder prototypes using BIT Mesra material processing facilities.",
+        "dueDate": "2026-04-10",
+        "status": "In_Progress"
+      },
+      {
+        "id": "m-3",
+        "title": "Pilot Deployment at 5 Community Handpumps",
+        "description": "Install gravity filters with community training on monthly backwashing.",
+        "dueDate": "2026-05-15",
+        "status": "Pending"
+      },
+      {
+        "id": "m-4",
+        "title": "Water Quality Certification by State Laboratory",
+        "description": "Third-party water compliance verification and handover to Banari Jal Sahiya committee.",
+        "dueDate": "2026-06-30",
+        "status": "Pending"
+      }
+    ],
+    "socialImpactMetrics": {
+      "beneficiariesCount": 4200,
+      "villagesCovered": 12,
+      "sdgGoal": "SDG 6: Clean Water and Sanitation"
+    }
+  },
+  {
+    "code": "JHK-2026-AGR-034",
+    "title": "Solar-Powered Automated Lac & Tussar Silk Processing for Tribal SHGs",
+    "description": "Over 600 tribal women lac cultivators in Khunti struggle with manual scrape-processing of sticklac and boiling cocoons. Inefficient traditional tools cause high wastage (up to 38% yield loss) and respiratory ailments from open firewood smoke. There is urgent need for an affordable solar mechanical scraper and temperature-controlled defoliator.",
+    "thematicDomain": "Agriculture",
+    "location": {
+      "district": "Khunti",
+      "block": "Murhu",
+      "panchayatOrVillage": "Burju Panchayat (JSLPS Palash Cluster)",
+      "landmark": "Near Torpa-Murhu tribal craft junction",
+      "coordinates": {
+        "lat": 23.0722,
+        "lng": 85.2797
+      }
+    },
+    "submittedBy": {
+      "name": "Shanti Mundari",
+      "type": "SHG / NGO",
+      "contactPhone": "+91 94703-41908",
+      "date": "2026-02-28"
+    },
+    "evidence": [
+      {
+        "type": "image",
+        "url": "https://images.unsplash.com/photo-1595974482597-4b8da8879bc5?auto=format&fit=crop&w=800&q=80",
+        "caption": "Manual hand scrapping of raw sticklac by women self-help group members"
+      }
+    ],
+    "status": "Industry_Sponsored",
+    "priority": "High",
+    "affectedPopulationEstimate": 1850,
+    "assignedUniversity": "Birsa Agricultural University (BAU)",
+    "universityProposal": {
+      "id": "prop-bau-02",
+      "universityName": "Birsa Agricultural University",
+      "universityShortName": "BAU Ranchi",
+      "departmentLead": "Faculty of Agricultural Engineering & Non-Timber Forest Products Lab",
+      "facultyMentor": {
+        "id": "fac-02",
+        "name": "Dr. Rameshwar Mahto",
+        "department": "Post-Harvest Technology & Agro-Processing",
+        "designation": "Associate Professor",
+        "email": "rmahto@bauranchi.org"
+      },
+      "studentMembers": [
+        {
+          "id": "stu-201",
+          "name": "Sunita Hembrom",
+          "rollNumber": "BAU/AGENG/23/018",
+          "discipline": "B.Tech Agricultural Engineering",
+          "semester": "6th Semester",
+          "roleInProject": "Machine Kinematics & Roller Serration Design"
+        },
+        {
+          "id": "stu-202",
+          "name": "Vikas Kumar Saw",
+          "rollNumber": "BAU/AGENG/23/024",
+          "discipline": "B.Tech Agricultural Engineering",
+          "semester": "6th Semester",
+          "roleInProject": "Solar Photovoltaic & Motor Controller Integration"
+        }
+      ],
+      "title": "Ergonomic Solar Dual-Action Sticklac Cracker and Cocoon Reeling Machine",
+      "abstract": "A compact, 180-watt portable solar machine with food-grade silicone rollers to crack sticklac without damaging seedlac granules, featuring digital temperature feedback for cocoon degumming.",
+      "proposedBudgetINR": 275000,
+      "estimatedTimelineMonths": 5,
+      "nepExperientialCredits": 4,
+      "labResourcesRequired": [
+        "Agro-Machine Workshop",
+        "Solar Test Bench"
+      ],
+      "intellectualPropertyTarget": "Design Registration & Utility Patent with BAU Innovation Cell",
+      "submissionDate": "2026-03-05",
+      "status": "Approved"
+    },
+    "industrySponsor": {
+      "id": "ind-02",
+      "companyName": "Samunnati Agro MSME Innovations",
+      "companyType": "MSME",
+      "contactPerson": "Kalyan Sundaram (Director - Rural Value Chains)",
+      "csrFundAllocatedINR": 350000,
+      "supportType": "Co-Development",
+      "industryMentorsAssigned": [
+        "Sunil Kindo (Tribal Cooperative Supply Chain Advisor)"
+      ],
+      "pledgeDate": "2026-03-10",
+      "deliverablesExpected": "Field trial with 4 SHG clusters in Murhu; 30% increase in daily processed volume.",
+      "deploymentSite": "Burju Village Common Facility Centre, Khunti"
+    },
+    "milestones": [
+      {
+        "id": "m-201",
+        "title": "CAD Modeling & Dynamic Stress Simulation",
+        "description": "Design roller tolerance for Kusmi and Rangeeni lac twigs.",
+        "dueDate": "2026-03-25",
+        "status": "Completed",
+        "completedDate": "2026-03-22"
+      },
+      {
+        "id": "m-202",
+        "title": "Functional Prototype Assembly & Test Run",
+        "description": "Fabricate unit in BAU mechanical workshop and test with 100 kg sticklac.",
+        "dueDate": "2026-04-15",
+        "status": "In_Progress"
+      },
+      {
+        "id": "m-203",
+        "title": "Cluster Field Trials & SHG Operator Feedback",
+        "description": "Deploy 2 units at Murhu Palash centre for 30 consecutive days.",
+        "dueDate": "2026-05-20",
+        "status": "Pending"
+      }
+    ],
+    "socialImpactMetrics": {
+      "beneficiariesCount": 620,
+      "villagesCovered": 8,
+      "sdgGoal": "SDG 8: Decent Work & Economic Growth"
+    }
+  },
+  {
+    "code": "JHK-2026-ENV-077",
+    "title": "AI Smart Dust Suppression & Micro-Climate Sensors for Coal Haul Roads",
+    "description": "Heavy coal transportation trucks kicking up PM2.5 and PM10 particulate clouds exceeding 480 µg/m³ near residential habitations bordering open-cast mines. Current sprinkler trucks spray water intermittently without correlation to dust concentration or wind direction, causing severe water wastage and respiratory distress in adjacent school areas.",
+    "thematicDomain": "Environment & Mining",
+    "location": {
+      "district": "Dhanbad",
+      "block": "Jharia",
+      "panchayatOrVillage": "Bastacolla & Lodna Mining Periphery",
+      "landmark": "Near Shastri Nagar Primary School",
+      "coordinates": {
+        "lat": 23.7422,
+        "lng": 86.4172
+      }
+    },
+    "submittedBy": {
+      "name": "Ravi Ranjan Singh",
+      "type": "Citizen",
+      "contactPhone": "+91 98352-19804",
+      "date": "2026-03-04"
+    },
+    "evidence": [
+      {
+        "type": "image",
+        "url": "https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?auto=format&fit=crop&w=800&q=80",
+        "caption": "Dust cloud generated along Bastacolla haul road adjacent to school boundary"
+      },
+      {
+        "type": "document",
+        "url": "#",
+        "caption": "Central Pollution Control Board Continuous Ambient Air Quality Data (Jan-Feb 2026)",
+        "fileSize": "2.4 MB"
+      }
+    ],
+    "status": "Proposal_Submitted",
+    "priority": "Critical",
+    "affectedPopulationEstimate": 8500,
+    "assignedUniversity": "IIT (ISM) Dhanbad",
+    "universityProposal": {
+      "id": "prop-iitism-03",
+      "universityName": "Indian Institute of Technology (ISM) Dhanbad",
+      "universityShortName": "IIT (ISM) Dhanbad",
+      "departmentLead": "Department of Environmental Science & Mining Engineering",
+      "facultyMentor": {
+        "id": "fac-03",
+        "name": "Prof. Gurdeep Singh",
+        "department": "Environmental Science & Engineering",
+        "designation": "Chair Professor & Head of Clean Coal Technologies",
+        "email": "gsingh@iitism.ac.in"
+      },
+      "studentMembers": [
+        {
+          "id": "stu-301",
+          "name": "Arjun Banerji",
+          "rollNumber": "22JE0145",
+          "discipline": "Dual Degree Mining & Data Science",
+          "semester": "8th Semester",
+          "roleInProject": "Computer Vision Dust Cloud Density Classifier"
+        },
+        {
+          "id": "stu-302",
+          "name": "Pragya Soren",
+          "rollNumber": "23MTENV012",
+          "discipline": "M.Tech Environmental Engineering",
+          "semester": "2nd Semester",
+          "roleInProject": "Atmospheric Dispersion Modeling & Sensor Calibration"
+        },
+        {
+          "id": "stu-303",
+          "name": "Mohit Agarwal",
+          "rollNumber": "22JE0678",
+          "discipline": "B.Tech Electrical & Electronics",
+          "semester": "6th Semester",
+          "roleInProject": "IoT Solenoid Mist Valve Gateway & LoRaWAN Relay"
+        }
+      ],
+      "title": "Smart Edge-Vision & LoRa Sensor Mesh for Autonomous Targeted Road Misting",
+      "abstract": "Deploying solar-powered optical particle sensors and roadside infrared cameras running lightweight YOLO models. Automatically activates directional micro-droplet misting nozzles ONLY when truck platoons generate dust clouds, cutting water consumption by 65%.",
+      "proposedBudgetINR": 520000,
+      "estimatedTimelineMonths": 6,
+      "nepExperientialCredits": 6,
+      "labResourcesRequired": [
+        "Clean Air IoT Incubator",
+        "Environmental Chambers",
+        "High-Performance GPU Server"
+      ],
+      "intellectualPropertyTarget": "Joint Patent between IIT ISM and Mining Corporation",
+      "submissionDate": "2026-03-09",
+      "status": "Submitted"
+    },
+    "milestones": [
+      {
+        "id": "m-301",
+        "title": "Sensor Node Enclosure & Solar Rig Prototyping",
+        "description": "Build 6 dustproof IP67 sensor nodes with optical PM sensors and LoRaWAN transceivers.",
+        "dueDate": "2026-04-05",
+        "status": "In_Progress"
+      },
+      {
+        "id": "m-302",
+        "title": "Edge AI Vehicle & Dust Detection Model Training",
+        "description": "Train edge model on 2,000 annotated coal corridor video frames.",
+        "dueDate": "2026-04-28",
+        "status": "Pending"
+      },
+      {
+        "id": "m-303",
+        "title": "Corridor Pilot Installation & BCCL Haul Road Trial",
+        "description": "500-meter test stretch near Shastri Nagar school gate.",
+        "dueDate": "2026-05-30",
+        "status": "Pending"
+      }
+    ],
+    "socialImpactMetrics": {
+      "beneficiariesCount": 8500,
+      "villagesCovered": 3,
+      "sdgGoal": "SDG 3: Good Health and Well-being"
+    }
+  },
+  {
+    "code": "JHK-2026-EDU-052",
+    "title": "Offline Multilingual Digital STEM Lab for Santhali & Ho Tribal Primary Schools",
+    "description": "Primary schools in forested blocks lack cellular connectivity and vernacular science teaching materials. Tribal children speaking Santhali (Ol Chiki) or Ho struggle to comprehend English/Hindi textbook STEM concepts, leading to high dropout rates by Grade 5.",
+    "thematicDomain": "Education",
+    "location": {
+      "district": "Dumka",
+      "block": "Shikaripara",
+      "panchayatOrVillage": "Pinargaria Panchayat (6 Govt Primary Schools)",
+      "landmark": "Near Tribal Welfare Residential Ashram",
+      "coordinates": {
+        "lat": 24.2694,
+        "lng": 87.2483
+      }
+    },
+    "submittedBy": {
+      "name": "Marshal Marandi",
+      "type": "Panchayat",
+      "contactPhone": "+91 94301-77821",
+      "date": "2026-02-20"
+    },
+    "evidence": [
+      {
+        "type": "image",
+        "url": "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=800&q=80",
+        "caption": "Government school classroom with tribal students lacking vernacular learning aids"
+      }
+    ],
+    "status": "Pilot_Deployed",
+    "priority": "High",
+    "affectedPopulationEstimate": 1400,
+    "assignedUniversity": "Central University of Jharkhand",
+    "universityProposal": {
+      "id": "prop-cuj-04",
+      "universityName": "Central University of Jharkhand (CUJ)",
+      "universityShortName": "CUJ Ranchi",
+      "departmentLead": "Centre for Tribal Studies & Department of Computer Science",
+      "facultyMentor": {
+        "id": "fac-04",
+        "name": "Dr. Nirmal Murmu",
+        "department": "Tribal Language & Linguistics",
+        "designation": "Assistant Professor",
+        "email": "nmurmu@cuj.ac.in"
+      },
+      "studentMembers": [
+        {
+          "id": "stu-401",
+          "name": "Salomi Hansda",
+          "rollNumber": "CUJ/MCA/24/007",
+          "discipline": "Master of Computer Applications",
+          "semester": "4th Semester",
+          "roleInProject": "Interactive Web Audio Engine & Ol Chiki Font Rendering"
+        },
+        {
+          "id": "stu-402",
+          "name": "Karan Tudu",
+          "rollNumber": "CUJ/ED/23/031",
+          "discipline": "B.Ed Language Pedagogy",
+          "semester": "4th Semester",
+          "roleInProject": "Curriculum Translation & Voice Acting"
+        }
+      ],
+      "title": "Khel-Khel Te (Learn by Play): Solar Mini-Raspberry Pi Wi-Fi STEM Server in Ol Chiki",
+      "abstract": "Zero-internet solar micro-server broadcasting educational interactive simulation games in Santhali and Ho to low-cost tablets within 100 meters of the school courtyard.",
+      "proposedBudgetINR": 210000,
+      "estimatedTimelineMonths": 4,
+      "nepExperientialCredits": 4,
+      "labResourcesRequired": [
+        "Tribal Audio Recording Studio",
+        "Embedded IoT Test Lab"
+      ],
+      "submissionDate": "2026-02-25",
+      "status": "Approved"
+    },
+    "industrySponsor": {
+      "id": "ind-04",
+      "companyName": "Tata Steel CSR - Education Wing",
+      "companyType": "Corporate",
+      "contactPerson": "Deepa Verma (Chief of Education Partnerships)",
+      "csrFundAllocatedINR": 420000,
+      "supportType": "Funding",
+      "industryMentorsAssigned": [
+        "Sudipto Ganguly (Senior EdTech Architect)"
+      ],
+      "pledgeDate": "2026-03-01",
+      "deliverablesExpected": "10 solar digital boxes deployed across Dumka and West Singhbhum schools.",
+      "deploymentSite": "Shikaripara & Chaibasa Tribal Schools"
+    },
+    "milestones": [
+      {
+        "id": "m-401",
+        "title": "Ol Chiki & Ho Voice Audio Bank Creation",
+        "description": "Record 350 STEM vocabulary words and 40 short science stories in tribal dialects.",
+        "dueDate": "2026-03-05",
+        "status": "Completed",
+        "completedDate": "2026-03-04"
+      },
+      {
+        "id": "m-402",
+        "title": "Mini Server Enclosure & Battery Integration",
+        "description": "Rugged dustproof box with 20W mini solar panel and LiFePO4 battery pack.",
+        "dueDate": "2026-03-12",
+        "status": "Completed",
+        "completedDate": "2026-03-11"
+      },
+      {
+        "id": "m-403",
+        "title": "Classroom Pilot Handover & Teacher Orientation",
+        "description": "Deploy at Pinargaria Govt Primary School and train 12 para-teachers.",
+        "dueDate": "2026-03-16",
+        "status": "Completed",
+        "completedDate": "2026-03-15"
+      }
+    ],
+    "socialImpactMetrics": {
+      "beneficiariesCount": 1400,
+      "villagesCovered": 6,
+      "sdgGoal": "SDG 4: Quality Education"
+    }
+  },
+  {
+    "code": "JHK-2026-HLT-089",
+    "title": "Off-Grid Smart Cold Chain & Remote ECG Tele-Diagnostics for Sub-Centers",
+    "description": "Frequent 12-hour grid power outages in forested sub-centers cause vaccine spoiling (breakdown of cold chain) and force pregnant mothers with cardiac distress to travel 45 km to district hospitals over unpaved hill tracks.",
+    "thematicDomain": "Healthcare",
+    "location": {
+      "district": "Latehar",
+      "block": "Garu",
+      "panchayatOrVillage": "Kumandih & Betla Buffer Villages",
+      "landmark": "Near Garu Community Health Sub-Center",
+      "coordinates": {
+        "lat": 23.7424,
+        "lng": 84.2764
+      }
+    },
+    "submittedBy": {
+      "name": "Dr. Binay Kujur (Medical Officer)",
+      "type": "Government Dept",
+      "contactPhone": "+91 94317-66230",
+      "date": "2026-03-06"
+    },
+    "evidence": [
+      {
+        "type": "image",
+        "url": "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=800&q=80",
+        "caption": "Latehar rural sub-center vaccine refrigerator struggling with intermittent power"
+      }
+    ],
+    "status": "Submitted",
+    "priority": "Critical",
+    "affectedPopulationEstimate": 9200,
+    "assignedUniversity": "NIT Jamshedpur",
+    "milestones": [
+      {
+        "id": "m-501",
+        "title": "Institutional Evaluation & Multidisciplinary Team Constitution",
+        "description": "NIT Jamshedpur forming biomedical & electrical student taskforce.",
+        "dueDate": "2026-03-24",
+        "status": "In_Progress"
+      }
+    ],
+    "socialImpactMetrics": {
+      "beneficiariesCount": 9200,
+      "villagesCovered": 14,
+      "sdgGoal": "SDG 3: Good Health and Well-being"
+    }
+  },
+  {
+    "code": "JHK-2026-URB-094",
+    "title": "Smart Waste Segregation & Black-Spot Detection for Ranchi Swachh Bharat Route",
+    "description": "Open dumping along roadside culverts in Ward 24 & Ward 36 creates recurrent mosquito breeding and drainage clogging. Garbage tipper trucks often skip narrow lanes without supervisor visibility.",
+    "thematicDomain": "Urban Infrastructure",
+    "location": {
+      "district": "Ranchi",
+      "block": "Ranchi Sadar",
+      "panchayatOrVillage": "Harmu & Kishoreganj Wards",
+      "landmark": "Near Harmu Rivulet Bridge",
+      "coordinates": {
+        "lat": 23.3512,
+        "lng": 85.3129
+      }
+    },
+    "submittedBy": {
+      "name": "Pooja Srivastava (Citizen Resident Association)",
+      "type": "Urban Local Body",
+      "contactPhone": "+91 97714-33219",
+      "date": "2026-03-08"
+    },
+    "evidence": [
+      {
+        "type": "image",
+        "url": "https://images.unsplash.com/photo-1530587191325-3db32d826c18?auto=format&fit=crop&w=800&q=80",
+        "caption": "Garbage accumulation along Harmu drainage channel"
+      }
+    ],
+    "status": "Routed_HEI",
+    "priority": "Medium",
+    "affectedPopulationEstimate": 12000,
+    "assignedUniversity": "Ranchi University",
+    "milestones": [
+      {
+        "id": "m-601",
+        "title": "Ward Route Audit & Sanitation Worker Interviews",
+        "description": "Map 18 primary collection routes and identify 11 persistent black-spots.",
+        "dueDate": "2026-03-29",
+        "status": "In_Progress"
+      }
+    ],
+    "socialImpactMetrics": {
+      "beneficiariesCount": 12000,
+      "villagesCovered": 4,
+      "sdgGoal": "SDG 11: Sustainable Cities and Communities"
+    }
+  }
+]
