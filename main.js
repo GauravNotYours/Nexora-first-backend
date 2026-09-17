@@ -30,10 +30,10 @@ const locationSchema = new mongoose.Schema({ district: { type: String, required:
 const evidenceSchema = new mongoose.Schema({ type: { type: String, enum: ["image", "document"], default: "image" }, caption: { type: String, maxlength: 300 }, fileSize: String, data: Buffer, contentType: String, url: String }, { _id: false })
 const studentSchema = new mongoose.Schema({ id: String, name: String, rollNumber: String, discipline: String, semester: String, roleInProject: String }, { _id: false })
 const proposalSchema = new mongoose.Schema({ id: String, universityName: String, universityShortName: String, departmentLead: String, facultyMentor: Object, studentMembers: [studentSchema], title: String, abstract: String, proposedBudgetINR: Number, estimatedTimelineMonths: Number, submissionDate: String, status: { type: String, enum: ["Draft", "Submitted", "Approved", "Under_Review"], default: "Submitted" } }, { _id: false })
-const sponsorSchema = new mongoose.Schema({ id: String, companyName: String, companyType: String, contactPerson: String, csrFundAllocatedINR: Number, supportType: String, industryMentorsAssigned: [String], pledgeDate: String, deliverablesExpected: String, deploymentSite: String }, { _id: false })
+const sponsorSchema = new mongoose.Schema({ id: String, companyName: String, companyType: String, contactPerson: String, csrFundAllocatedINR: Number, supportType: String, industryMentorsAssigned: [String], pledgeDate: String, deliverablesExpected: String, deploymentSite: String, resolutionRemark: String, resolved: Boolean, resolvedDate: String }, { _id: false })
 const milestoneSchema = new mongoose.Schema({ id: String, title: String, description: String, dueDate: String, status: { type: String, enum: ["Pending", "In_Progress", "Completed", "Verified_By_Govt"], default: "Pending" }, completedDate: String, deliverableLink: String, evidenceNotes: String }, { _id: false })
 const userSchema = new mongoose.Schema({ name: { type: String, required: true, trim: true, maxlength: 100 }, email: { type: String, required: true, unique: true, lowercase: true, trim: true, maxlength: 254 }, passwordHash: { type: String, required: true }, role: { type: String, enum: roles, required: true }, organization: { type: String, trim: true, maxlength: 160 }, bio: { type: String, trim: true, maxlength: 1000 } }, { timestamps: true })
-const challengeSchema = new mongoose.Schema({ code: { type: String, required: true, unique: true, immutable: true }, title: { type: String, required: true, trim: true, maxlength: 180 }, description: { type: String, required: true, trim: true, maxlength: 5000 }, thematicDomain: { type: String, enum: domains, required: true }, location: { type: locationSchema, required: true }, submittedBy: { name: { type: String, required: true, trim: true, maxlength: 100 }, type: { type: String, enum: ["Citizen", "Panchayat", "SHG / NGO", "Government Dept", "Urban Local Body"], default: "Citizen" }, contactPhone: String, date: String }, evidence: [evidenceSchema], status: { type: String, enum: statuses, default: "Submitted" }, priority: { type: String, enum: priorities, default: "Medium" }, affectedPopulationEstimate: { type: Number, default: 0, min: 0 }, assignedUniversity: String, universityProposal: proposalSchema, industrySponsor: sponsorSchema, milestones: [milestoneSchema], socialImpactMetrics: { beneficiariesCount: Number, villagesCovered: Number, sdgGoal: String } }, { timestamps: true })
+const challengeSchema = new mongoose.Schema({ code: { type: String, required: true, unique: true, immutable: true }, title: { type: String, required: true, trim: true, maxlength: 180 }, description: { type: String, required: true, trim: true, maxlength: 5000 }, thematicDomain: { type: String, enum: domains, required: true }, location: { type: locationSchema, required: true }, submittedBy: { name: { type: String, required: true, trim: true, maxlength: 100 }, type: { type: String, enum: ["Citizen", "Panchayat", "SHG / NGO", "Government Dept", "Urban Local Body"], default: "Citizen" }, contactPhone: String, date: String }, evidence: [evidenceSchema], status: { type: String, enum: statuses, default: "Submitted" }, priority: { type: String, enum: priorities, default: "Medium" }, affectedPopulationEstimate: { type: Number, default: 0, min: 0 }, assignedUniversity: String, assignedIndustryEmail: String, assignedIndustryName: String, universityProposal: proposalSchema, industrySponsor: sponsorSchema, milestones: [milestoneSchema], socialImpactMetrics: { beneficiariesCount: Number, villagesCovered: Number, sdgGoal: String } }, { timestamps: true })
 
 const User = mongoose.model("User", userSchema)
 const Challenge = mongoose.model("Challenge", challengeSchema)
@@ -169,11 +169,31 @@ app.patch("/api/challenges/:code/milestones/:milestoneId", authenticate, allow("
   await item.save()
   res.json(publicChallenge(item))
 }))
+app.patch("/api/challenges/:code/industry-resolution", authenticate, allow("company", "admin"), asyncRoute(async (req, res) => {
+  const item = await Challenge.findOne({ code: req.params.code.toUpperCase() })
+  if (!item) return res.status(404).json({ message: "Challenge not found." })
+  if (req.user.role === "company" && item.assignedIndustryEmail !== req.user.email) return res.status(403).json({ message: "This challenge is not assigned to your industry account." })
+  const remark = clean(req.body.remark || "")
+  if (!remark) return res.status(400).json({ message: "A resolution remark is required." })
+  item.industrySponsor = { ...(item.industrySponsor?.toObject?.() || item.industrySponsor || {}), resolutionRemark: remark, resolved: Boolean(req.body.resolved), resolvedDate: req.body.resolved ? new Date().toISOString().slice(0, 10) : "" }
+  if (req.body.resolved) item.status = "Pilot_Deployed"
+  await item.save()
+  res.json(publicChallenge(item))
+}))
 app.patch("/api/admin/challenges/:code", authenticate, allow("admin"), asyncRoute(async (req, res) => {
   const update = {}
   if (statuses.includes(req.body.status)) update.status = req.body.status
   if (priorities.includes(req.body.priority)) update.priority = req.body.priority
   if (clean(req.body.assignedUniversity || "")) update.assignedUniversity = clean(req.body.assignedUniversity)
+  if (req.body.assignedIndustryEmail === "") {
+    update.assignedIndustryEmail = ""
+    update.assignedIndustryName = ""
+  } else if (clean(req.body.assignedIndustryEmail || "")) {
+    const industry = await User.findOne({ email: clean(req.body.assignedIndustryEmail).toLowerCase(), role: "company" })
+    if (!industry) return res.status(404).json({ message: "Industry account not found." })
+    update.assignedIndustryEmail = industry.email
+    update.assignedIndustryName = industry.organization || industry.name
+  }
   const item = await Challenge.findOneAndUpdate({ code: req.params.code.toUpperCase() }, update, { new: true })
   if (!item) return res.status(404).json({ message: "Challenge not found." })
   res.json(publicChallenge(item))
@@ -197,6 +217,16 @@ app.post("/api/admin/users", authenticate, allow("admin"), asyncRoute(async (req
   if (!["university", "company"].includes(role) || !clean(name || "") || !clean(email || "") || String(password || "").length < 12) return res.status(400).json({ message: "Provide name, email, university/company role, and a password of at least 12 characters." })
   const user = await User.create({ name: clean(name), email: clean(email).toLowerCase(), passwordHash: await bcrypt.hash(password, 12), role, organization: clean(organization || ""), bio: clean(bio || "") })
   res.status(201).json({ id: user.id, name: user.name, role: user.role, organization: user.organization, email: user.email })
+}))
+app.get("/api/admin/users", authenticate, allow("admin"), asyncRoute(async (_req, res) => {
+  const users = await User.find({ role: { $in: ["university", "company"] } }).select("name email role organization bio createdAt").sort({ createdAt: -1 })
+  res.json(users)
+}))
+app.delete("/api/admin/users/:id", authenticate, allow("admin"), asyncRoute(async (req, res) => {
+  const user = await User.findOneAndDelete({ _id: req.params.id, role: { $in: ["university", "company"] } })
+  if (!user) return res.status(404).json({ message: "Stakeholder account not found." })
+  await Challenge.updateMany({ assignedIndustryEmail: user.email }, { $set: { assignedIndustryEmail: "", assignedIndustryName: "" } })
+  res.sendStatus(204)
 }))
 
 async function ensureSeedData() {
