@@ -77,11 +77,7 @@ app.post("/api/auth/login", rateLimit({ windowMs: 15 * 60 * 1000, limit: 100 }),
   res.json({ token: tokenFor(user), user: { id: user.id, name: user.name, role: user.role, organization: user.organization, email: user.email } })
 }))
 app.post("/api/auth/admin-login", rateLimit({ windowMs: 15 * 60 * 1000, limit: 50 }), asyncRoute(async (req, res) => {
-  const { email, password, accessKey } = req.body
-  const expectedKey = process.env.ADMIN_ACCESS_KEY || "jharkhand-gov-console-2026"
-  if (!accessKey || accessKey !== expectedKey) {
-    return res.status(401).json({ message: "Invalid admin console access key." })
-  }
+  const { email, password } = req.body
   const user = await User.findOne({ email: clean(email || "").toLowerCase(), role: "admin" })
   if (!user || !(await bcrypt.compare(String(password || ""), user.passwordHash))) {
     return res.status(401).json({ message: "Invalid admin email or password." })
@@ -183,8 +179,18 @@ app.patch("/api/admin/challenges/:code", authenticate, allow("admin"), asyncRout
   res.json(publicChallenge(item))
 }))
 app.get("/api/admin/analytics", authenticate, allow("admin"), asyncRoute(async (_req, res) => {
-  const [totalChallengesReceived, activeHEIProjects, pilotsDeployed, byDomain] = await Promise.all([Challenge.countDocuments(), Challenge.countDocuments({ status: { $in: ["Proposal_Submitted", "In_Prototyping", "Industry_Sponsored", "Field_Testing"] } }), Challenge.countDocuments({ status: "Pilot_Deployed" }), Challenge.aggregate([{ $group: { _id: "$thematicDomain", count: { $sum: 1 } } }])])
-  res.json({ totalChallengesReceived, activeHEIProjects, pilotsDeployed, byDomain })
+  const [totalChallengesReceived, activeHEIProjects, pilotsDeployed, adoptedChallenges, participatingUniversities, industryPartnersJoined, byDomain, byDistrict] = await Promise.all([
+    Challenge.countDocuments(),
+    Challenge.countDocuments({ status: { $in: ["Proposal_Submitted", "In_Prototyping", "Industry_Sponsored", "Field_Testing"] } }),
+    Challenge.countDocuments({ status: "Pilot_Deployed" }),
+    Challenge.countDocuments({ status: { $ne: "Submitted" } }),
+    User.countDocuments({ role: "university" }),
+    User.countDocuments({ role: "company" }),
+    Challenge.aggregate([{ $group: { _id: "$thematicDomain", count: { $sum: 1 } } }]),
+    Challenge.aggregate([{ $group: { _id: "$location.district", totalChallenges: { $sum: 1 }, activeProjects: { $sum: { $cond: [{ $in: ["$status", ["Proposal_Submitted", "In_Prototyping", "Industry_Sponsored", "Field_Testing"]] }, 1, 0] } }, resolvedChallenges: { $sum: { $cond: [{ $eq: ["$status", "Pilot_Deployed"] }, 1, 0] } } } }, { $project: { _id: 0, districtName: "$_id", totalChallenges: 1, activeProjects: 1, resolvedChallenges: 1 } }, { $sort: { totalChallenges: -1, districtName: 1 } }])
+  ])
+  const sponsorships = await Challenge.aggregate([{ $match: { industrySponsor: { $exists: true } } }, { $group: { _id: null, total: { $sum: "$industrySponsor.csrFundAllocatedINR" } } }])
+  res.json({ totalChallengesReceived, activeHEIProjects, pilotsDeployed, adoptionRate: totalChallengesReceived ? Math.round(adoptedChallenges / totalChallengesReceived * 100) : 0, participatingUniversities, industryPartnersJoined, totalCsrFundsMobilizedINR: Math.round((sponsorships[0]?.total || 0) / 10000000 * 10) / 10, patentsFiled: 0, byDomain, byDistrict })
 }))
 app.post("/api/admin/users", authenticate, allow("admin"), asyncRoute(async (req, res) => {
   const { name, email, password, role, organization, bio } = req.body
