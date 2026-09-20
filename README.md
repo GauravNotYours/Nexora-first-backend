@@ -12,7 +12,7 @@ The first startup creates the administrator from `ADMIN_EMAIL`, `ADMIN_PASSWORD`
 
 ## Deploy to Render
 
-Create a Web Service using this directory as the root. Use build command `npm install` and start command `npm start`. Add `MONGODB_URI`, `JWT_SECRET`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`, and `CLIENT_URL` as Render environment variables. `CLIENT_URL` must exactly match the deployed Vercel URL; comma-separate multiple allowed frontend URLs if needed.
+Create a Web Service using this directory as the root. Use build command `npm install` and start command `npm start`. Add `MONGODB_URI`, `JWT_SECRET`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`, and `CLIENT_URL` as Render environment variables. `CLIENT_URL` must match the deployed Vercel URL, for example `https://your-site.vercel.app`; comma-separate multiple allowed frontend URLs if needed. Trailing slashes are ignored.
 
 Challenge evidence (up to four JPG, PNG, WebP, or PDF files) is stored as bounded data in MongoDB and served through challenge evidence routes.
 

@@ -12,7 +12,7 @@ import multer from "multer"
 
 const app = express()
 const port = Number(process.env.PORT || 3000)
-const origins = (process.env.CLIENT_URL || "http://localhost:5173").split(",").map((value) => value.trim())
+const origins = (process.env.CLIENT_URL || "http://localhost:5173").split(",").map((value) => value.trim().replace(/\/+$/, ""))
 const jwtSecret = process.env.JWT_SECRET || "development-only-secret-change-me"
 const domains = ["Water Resources", "Agriculture", "Healthcare", "Education", "Rural Livelihoods", "Environment & Mining", "Sanitation", "Energy & Solar", "Urban Infrastructure", "Accessibility"]
 const statuses = ["Submitted", "Routed_HEI", "Proposal_Submitted", "In_Prototyping", "Industry_Sponsored", "Field_Testing", "Pilot_Deployed"]
@@ -22,7 +22,7 @@ const roles = ["citizen", "university", "company", "admin"]
 app.set("trust proxy", 1)
 app.disable("x-powered-by")
 app.use(helmet({ crossOriginResourcePolicy: { policy: "cross-origin" } }))
-app.use(cors({ origin(origin, callback) { callback(null, !origin || origins.includes(origin)) } }))
+app.use(cors({ origin(origin, callback) { callback(null, !origin || origins.includes(String(origin).replace(/\/+$/, ""))) } }))
 app.use(express.json({ limit: "200kb" }))
 app.use(rateLimit({ windowMs: 15 * 60 * 1000, limit: 300, standardHeaders: "draft-8", legacyHeaders: false }))
 
