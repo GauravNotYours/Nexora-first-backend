@@ -1,12 +1,11 @@
 # Nexora API
 
-Express + MongoDB API for the Jharkhand Social Innovation Portal. It models the complete `exp1` lifecycle: citizen challenges, AI classification and HEI routing, university proposals, company/CSR sponsorship, milestones, government allocation, notifications, and state analytics.
+Express + MongoDB API for the Jharkhand Social Innovation Portal. It models the complete `(PreviousFront)` lifecycle: citizen challenges, AI classification and HEI routing, university proposals, company/CSR sponsorship, milestones, government allocation, notifications, and state analytics.
 
 ## Local setup
 
-1. Copy `.env.example` to `.env` and fill every value.
-2. Use a MongoDB Atlas connection string (or local MongoDB during development).
-3. Run `npm install`, then `npm run dev`.
+1. Use a MongoDB Atlas connection string (or local MongoDB during development).
+2. Run `npm install`, then `npm run dev`.
 
 The first startup creates the administrator from `ADMIN_EMAIL`, `ADMIN_PASSWORD`, and `ADMIN_NAME` when that email does not already exist. Keep `.env` private and use a long, unique `JWT_SECRET` and administrator password.
 
